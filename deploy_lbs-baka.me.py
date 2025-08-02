@@ -14,7 +14,7 @@ os.chdir(project_dir)
 subprocess.run(["git", "add", "."], check=True)
 
 # Create a commit message with timestamp
-commit_message = f"Auto-update: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+commit_message = f"Update & Fixes: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
 subprocess.run(["git", "commit", "-m", commit_message], check=False)  # skip error if nothing to commit
 
 # Push to GitHub
