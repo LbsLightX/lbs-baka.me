@@ -18,4 +18,4 @@ commit_message = f"Auto-update: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
 subprocess.run(["git", "commit", "-m", commit_message], check=False)  # skip error if nothing to commit
 
 # Push to GitHub
-subprocess.run(["git", "push", "origin", "main"], check=True)
+subprocess.run(["git", "push", "--force", "origin", "main"], check=True)
