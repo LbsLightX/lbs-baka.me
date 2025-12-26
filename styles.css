@@ -1,7 +1,7 @@
 /* FONT SETUP */
 @font-face {
     font-family: 'minecraft';
-    src: url('./fontfamilyminecraft.otf') format('opentype');
+    src: url('./ffminecraft.otf') format('opentype');
     font-display: swap;
 }
 

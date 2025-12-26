@@ -3,19 +3,57 @@
 import os
 import subprocess
 from datetime import datetime
+import sys
 
-# Your website directory
-project_dir = "/storage/emulated/0/Download/Termux-Directory/Web-Server/LbsLightX"
+# Absolute path to your website directory
+PROJECT_DIR = "/storage/emulated/0/Download/Termux-Directory/Web-Server/LbsLightX"
 
-# Go to the project directory
-os.chdir(project_dir)
+def run(cmd, allow_fail=False):
+    """Run a command and print it"""
+    print("➜", " ".join(cmd))
+    try:
+        subprocess.run(cmd, check=True)
+    except subprocess.CalledProcessError:
+        if allow_fail:
+            return
+        print("✖ Command failed:", " ".join(cmd))
+        sys.exit(1)
 
-# Stage all changes
-subprocess.run(["git", "add", "."], check=True)
+def main():
+    if not os.path.isdir(PROJECT_DIR):
+        print("✖ Project directory not found:")
+        print(PROJECT_DIR)
+        sys.exit(1)
 
-# Create a commit message with timestamp
-commit_message = f"Update & Fixes: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
-subprocess.run(["git", "commit", "-m", commit_message], check=False)  # skip error if nothing to commit
+    os.chdir(PROJECT_DIR)
+    print("✔ Working directory:", PROJECT_DIR)
 
-# Push to GitHub
-subprocess.run(["git", "push", "--force", "origin", "main"], check=True)
+    # Pull latest changes (important if GitHub UI modified files)
+    run(["git", "pull", "origin", "main"])
+
+    # Stage all changes
+    run(["git", "add", "."])
+
+    # Check if there is anything to commit
+    status = subprocess.run(
+        ["git", "status", "--porcelain"],
+        capture_output=True,
+        text=True
+    )
+
+    if not status.stdout.strip():
+        print("✔ No changes to commit")
+        return
+
+    # Commit with timestamp
+    commit_message = f"Update & Fixes: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+    run(["git", "commit", "-m", commit_message])
+
+    # Push safely (NO force)
+    run(["git", "push", "origin", "main"])
+
+    print("✔ Deployment complete")
+
+if __name__ == "__main__":
+    main()
+    
