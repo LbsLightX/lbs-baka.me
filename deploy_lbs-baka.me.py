@@ -9,7 +9,6 @@ import sys
 PROJECT_DIR = "/storage/emulated/0/Download/Termux-Directory/Web-Server/LbsLightX"
 
 def run(cmd, allow_fail=False):
-    """Run a command and print it"""
     print("➜", " ".join(cmd))
     try:
         subprocess.run(cmd, check=True)
@@ -28,10 +27,10 @@ def main():
     os.chdir(PROJECT_DIR)
     print("✔ Working directory:", PROJECT_DIR)
 
-    # Pull latest changes (important if GitHub UI modified files)
+    # Pull latest changes first (important)
     run(["git", "pull", "origin", "main"])
 
-    # Stage all changes
+    # Stage everything
     run(["git", "add", "."])
 
     # Check if there is anything to commit
@@ -45,11 +44,18 @@ def main():
         print("✔ No changes to commit")
         return
 
-    # Commit with timestamp
-    commit_message = f"Update & Fixes: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+    # Ask for commit message
+    user_message = input("📝 Enter commit message (press Enter for default): ").strip()
+
+    if user_message:
+        commit_message = user_message
+    else:
+        commit_message = f"Update & Fixes: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+
+    # Commit
     run(["git", "commit", "-m", commit_message])
 
-    # Push safely (NO force)
+    # Push (NO force)
     run(["git", "push", "origin", "main"])
 
     print("✔ Deployment complete")
