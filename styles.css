@@ -1,7 +1,7 @@
 /* FONT SETUP */
 @font-face {
-    font-family: 'castle';
-    src: url('./castle.otf') format('opentype');
+    font-family: 'binz';
+    src: url('./binz.otf') format('opentype');
     font-display: swap;
 }
 
@@ -43,7 +43,7 @@ body.light-mode {
 html {
     line-height: 1.5;
     -webkit-text-size-adjust: 100%;
-    font-family: 'minecraft', sans-serif;
+    font-family: 'binz', sans-serif;
 }
 
 body {
